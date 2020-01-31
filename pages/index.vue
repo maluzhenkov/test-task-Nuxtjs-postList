@@ -4,7 +4,7 @@
       <h1 class="title">simple-list-posts</h1>
       <h2 class="subtitle">Nuxt.js project</h2>
 
-      <posts-list :posts="posts" />
+      <posts-list :posts="posts" :loading="loading" :errors="errors" />
     </div>
   </section>
 </template>
@@ -19,6 +19,12 @@ export default {
   computed: {
     posts() {
       return this.$store.getters.getPosts;
+    },
+    loading() {
+      return this.$store.getters.getLoading;
+    },
+    errors() {
+      return this.$store.getters.getErrors;
     }
   },
   created() {

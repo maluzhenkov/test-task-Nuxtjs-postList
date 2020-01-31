@@ -1,6 +1,12 @@
 <template>
   <div class="post">
-    <transition-group v-if="posts.length" tag="ul" class="post__list" name="fade" appear>
+    <transition-group
+      v-if="posts.length && !loading"
+      tag="ul"
+      class="post__list"
+      name="fade"
+      appear
+    >
       <li class="post__item" v-for="post in posts" :key="post.id">
         <div class="post__header">
           <h3 class="post__title">{{ post.title }}</h3>
@@ -12,7 +18,9 @@
         </div>
       </li>
     </transition-group>
-    <div class="alert" v-else>Ошибка: Посты не найдены.</div>
+    <div class="alert" v-else-if="errors">Ошибка: {{errors}}</div>
+
+    <div class="spiner" v-else>Posts Loading...</div>
   </div>
 </template>
 
@@ -22,6 +30,13 @@ export default {
     posts: {
       type: Array,
       required: true
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    errors: {
+      type: String
     }
   },
   methods: {
@@ -32,7 +47,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 .post {
   padding: 10px;
 }
@@ -56,6 +71,9 @@ export default {
   text-transform: uppercase;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.spiner {
+  text-align: center;
 }
 .alert {
   padding: 1rem;
