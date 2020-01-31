@@ -20,6 +20,9 @@ export default {
     posts() {
       return this.$store.getters.getPosts;
     }
+  },
+  created() {
+    this.$store.dispatch("nuxtServerInit");
   }
 };
 </script>

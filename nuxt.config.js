@@ -1,8 +1,5 @@
 module.exports = {
   mode: "spa",
-  router: {
-    base: "/" // for base path
-  },
   /*
    ** Headers of the page
    */
