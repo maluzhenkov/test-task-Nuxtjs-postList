@@ -1,24 +1,23 @@
 <template>
   <div class="post">
-    <transition-group
-      v-if="posts.length && !loading"
-      tag="ul"
-      class="post__list"
-      name="fade"
-      appear
-    >
-      <li class="post__item" v-for="post in posts" :key="post.id">
-        <div class="post__header">
-          <h3 class="post__title">{{ post.title }}</h3>
-          <div class="spacer"></div>
-          <button type="button" class="btn btn_close" @click.stop="delPost(post.id)">&times;</button>
-        </div>
-        <div class="post__body">
-          <div class="post__descr">{{ post.body }}</div>
-        </div>
-      </li>
-    </transition-group>
-    <div class="alert" v-else-if="errors">Ошибка: {{errors}}</div>
+    <div v-if="!loading">
+      <div class="alert" v-if="errors.length">Error: {{errors}}</div>
+
+      <transition-group v-else-if="posts.length" tag="ul" class="post__list" name="fade" appear>
+        <li class="post__item" v-for="post in posts" :key="post.id">
+          <div class="post__header">
+            <h3 class="post__title">{{ post.title }}</h3>
+            <div class="spacer"></div>
+            <button type="button" class="btn btn_close" @click.stop="delPost(post.id)">&times;</button>
+          </div>
+          <div class="post__body">
+            <div class="post__descr">{{ post.body }}</div>
+          </div>
+        </li>
+      </transition-group>
+
+      <div v-else>Posts not found</div>
+    </div>
 
     <div class="spiner" v-else>Posts Loading...</div>
   </div>
@@ -33,7 +32,7 @@ export default {
     },
     loading: {
       type: Boolean,
-      default: false
+      required: true
     },
     errors: {
       type: String
@@ -54,13 +53,14 @@ export default {
 .post__header {
   display: flex;
   flex-wrap: nowrap;
+  margin-bottom: 0.5rem;
 }
 .post__list {
   list-style-type: none;
   padding: 0;
 }
 .post__item {
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 1.5rem;
   margin-bottom: 1rem;
   transition: all 0.3s ease-in-out;
   box-shadow: 0px 2px 5px 2px rgba(34, 60, 80, 0.1);

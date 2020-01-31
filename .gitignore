@@ -9,3 +9,10 @@ npm-debug.log
 
 # Nuxt generate
 dist
+public
+
+.firebaserc
+.firebase
+firebase.json
+*.zip
+*.rar
