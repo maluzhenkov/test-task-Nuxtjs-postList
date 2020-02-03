@@ -1,6 +1,19 @@
 # simple-list-posts
 
-> Nuxt.js project
+## Demo: https://test-b3010.web.app
+
+## Реализовать:
+
+  1) Запрос со стороны сервера NuxtJS на получение списка постов при помощи Axios.
+
+  2) Сохранение списка постов в хранилище Vuex.
+
+  3) Вывод списка постов на страницу.
+
+  4) Удаление поста из списка.
+
+В качестве тестового REST API сервера использовать сервис https://jsonplaceholder.typicode.com/
+
 
 ## Build Setup
 
