@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const host = "https://jsonplaceholder.typicode.com";
+
 export const state = () => ({
   posts: [],
   errors: "",
@@ -7,42 +9,48 @@ export const state = () => ({
 });
 
 export const mutations = {
-  setPosts(state, posts) {
+  SET_POSTS(state, posts) {
     state.posts = posts;
   },
-  setErrors(state, errors) {
+  SET_ERRORS(state, errors) {
     state.errors = errors.message;
   },
-  clearErrors(state) {
+  CLEAR_ERRORS(state) {
     state.errors = "";
   },
-  delPost(state, id) {
+  DEL_POST(state, id) {
     state.posts.splice(
       state.posts.findIndex(item => item.id === id),
       1
     );
   },
-  changeLoading(state) {
+  CHANGE_LOADING(state) {
     state.loading = !state.loading;
   }
 };
 
 export const actions = {
   nuxtServerInit({ commit }) {
-    commit("changeLoading");
-
+    commit("CHANGE_LOADING");
     return axios
-      .get("https://jsonplaceholder.typicode.com/posts")
+      .get(host + "/posts")
       .then(res => {
         if (Math.floor(res.status * 0.01) === 2) {
-          commit("setPosts", res.data);
-          commit("clearErrors");
+          commit("SET_POSTS", res.data);
+          commit("CLEAR_ERRORS");
         }
       })
       .catch(err => {
-        commit("setErrors", err);
+        commit("SET_ERRORS", err);
       })
-      .finally(() => commit("changeLoading"));
+      .finally(() => commit("CHANGE_LOADING"));
+  },
+  delPost({ commit }, id) {
+    return axios.delete(host + "/posts/" + id).then(res => {
+      if (Math.floor(res.status * 0.01) === 2) {
+        commit("DEL_POST", id);
+      }
+    });
   }
 };
 

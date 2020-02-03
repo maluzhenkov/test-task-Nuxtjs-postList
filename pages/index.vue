@@ -3,7 +3,7 @@
     <div class="page-wrapper">
       <h1 class="title">simple-list-posts</h1>
       <h2 class="subtitle">Nuxt.js project</h2>
-      <posts-list :posts="posts" :loading="loading" :errors="errors" />
+      <posts-list />
     </div>
   </section>
 </template>
@@ -14,17 +14,6 @@ import PostsList from "~/components/PostsList.vue";
 export default {
   components: {
     PostsList
-  },
-  computed: {
-    posts() {
-      return this.$store.getters.getPosts;
-    },
-    loading() {
-      return this.$store.getters.getLoading;
-    },
-    errors() {
-      return this.$store.getters.getErrors;
-    }
   }
 };
 </script>

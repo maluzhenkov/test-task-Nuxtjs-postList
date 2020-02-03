@@ -8,7 +8,15 @@
           <div class="post__header">
             <h3 class="post__title">{{ post.title }}</h3>
             <div class="spacer"></div>
-            <button type="button" class="btn btn_close" @click.stop="delPost(post.id)">&times;</button>
+            <button
+              class="btn btn_close"
+              type="button"
+              v-if="!delItemLoading"
+              @click.stop="delPost(post.id)"
+            >&times;</button>
+            <button class="btn btn_close" type="button" v-else disabled>
+              <div class="spiner"></div>
+            </button>
           </div>
           <div class="post__body">
             <div class="post__descr">{{ post.body }}</div>
@@ -19,28 +27,42 @@
       <div v-else>Posts not found</div>
     </div>
 
-    <div class="spiner" v-else>Posts Loading...</div>
+    <div class="loading" v-else>
+      Posts Loading...
+      <div class="spiner"></div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    posts: {
-      type: Array,
-      required: true
+  data() {
+    return {
+      delItemLoading: false
+    };
+  },
+  computed: {
+    posts() {
+      return this.$store.getters.getPosts;
     },
-    loading: {
-      type: Boolean,
-      required: true
+    loading() {
+      return this.$store.getters.getLoading;
     },
-    errors: {
-      type: String
+    errors() {
+      return this.$store.getters.getErrors;
     }
   },
   methods: {
     delPost(id) {
-      this.$store.commit("delPost", id);
+      this.delItemLoading = true;
+      this.$store
+        .dispatch("delPost", id)
+        .catch(err => {
+          alert(err.message);
+        })
+        .finally(() => {
+          this.delItemLoading = false;
+        });
     }
   }
 };
@@ -72,9 +94,31 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.spiner {
+
+.loading {
   text-align: center;
 }
+.spiner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  border-top-color: #000;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
 .alert {
   padding: 1rem;
   background-color: #ff5722;
